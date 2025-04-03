@@ -62,9 +62,9 @@
             margin-right: 10px;
         }
 
-        /* Add class for smooth opening */
+       
         .submenu.open {
-            max-height: 200px; /* Adjust this value based on content */
+            max-height: 200px; 
             padding: 8px 16px;
         }
     </style>
@@ -72,12 +72,18 @@
 <body>
 
     <ul id="menu"></ul>
+   <!-- This code creates a **dynamic menu with submenus** using JavaScript.
+  Clicking a menu opens its submenu while closing any previously open one.
+   **Smooth animations** are achieved using CSS `max-height` transitions.
+    Dummy data is used to populate the menu with titles, images, and items. 
+    The design is modern, with hover effects and a clean UI. 🚀 -->
 
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const menuContainer = document.getElementById("menu");
 
-            // Dummy data for testing
+          
             const menuData = [
                 {
                     "id": 1,
@@ -125,22 +131,22 @@
 
                     const submenu = menuItemElement.querySelector(".submenu");
 
-                    // Toggle submenu on click and close others
+                     
                     menuItemElement.querySelector(".menu-title").addEventListener("click", function () {
                         document.querySelectorAll(".submenu").forEach(sub => {
                             if (sub !== submenu) {
-                                sub.classList.remove("open"); // Close other submenus smoothly
+                                sub.classList.remove("open");  
                             }
                         });
 
-                        submenu.classList.toggle("open"); // Toggle selected submenu
+                        submenu.classList.toggle("open");  
                     });
 
                     menuContainer.appendChild(menuItemElement);
                 });
             }
 
-            // Render the menu with dummy data
+             
             renderMenu(menuData);
         });
     </script>
