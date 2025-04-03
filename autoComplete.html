@@ -94,7 +94,6 @@
 
         searchInput.addEventListener("keydown", function(e) {
             const items = document.querySelectorAll(".suggestions div");
-
             if (e.key === "ArrowDown") {
                 selectedIndex = (selectedIndex + 1) % items.length;
                 highlightItem(items);

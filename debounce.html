@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debounce Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            flex-direction: column;
+        }
+        input {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="text" id="searchInput" placeholder="Search...">
+    <p id="result">Debounced Value: <span id="debouncedValue">None</span></p>
+
+    <script>
+        function debounce(func, delay) {
+            let timer;
+            return function (...args) {
+                clearTimeout(timer);
+                timer = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        const searchInput = document.getElementById("searchInput");
+        const debouncedValue = document.getElementById("debouncedValue");
+
+        const handleSearch = debounce((query) => {
+            debouncedValue.textContent = query || "None";
+            console.log("Fetching results for:", query);
+        }, 500);
+
+        searchInput.addEventListener("input", (e) => {
+            handleSearch(e.target.value);
+        });
+    </script>
+
+</body>
+</html>
