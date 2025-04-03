@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Submenu</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        #menu {
+            width: 300px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .menu-title {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 12px 16px;
+            background: #007BFF;
+            color: white;
+            transition: 0.3s;
+            border-bottom: 1px solid #0056b3;
+        }
+
+        .menu-title:hover {
+            background: #0056b3;
+        }
+
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            background: #f9f9f9;
+            padding: 0 16px;
+            transition: max-height 0.4s ease-out, padding 0.3s ease-out;
+        }
+
+        .submenu li {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .submenu li:hover {
+            background: #e0e0e0;
+        }
+
+        .submenu img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* Add class for smooth opening */
+        .submenu.open {
+            max-height: 200px; /* Adjust this value based on content */
+            padding: 8px 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <ul id="menu"></ul>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuContainer = document.getElementById("menu");
+
+            // Dummy data for testing
+            const menuData = [
+                {
+                    "id": 1,
+                    "title": "Electronics",
+                    "submenu": [
+                        { "id": 101, "name": "Laptops", "image": "https://via.placeholder.com/24" },
+                        { "id": 102, "name": "Smartphones", "image": "https://via.placeholder.com/24" }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "title": "Clothing",
+                    "submenu": [
+                        { "id": 201, "name": "Men's Wear", "image": "https://via.placeholder.com/24" },
+                        { "id": 202, "name": "Women's Wear", "image": "https://via.placeholder.com/24" }
+                    ]
+                },
+                {
+                    "id": 3,
+                    "title": "Home Appliances",
+                    "submenu": [
+                        { "id": 301, "name": "Refrigerators", "image": "https://via.placeholder.com/24" },
+                        { "id": 302, "name": "Washing Machines", "image": "https://via.placeholder.com/24" }
+                    ]
+                }
+            ];
+
+            function renderMenu(menuData) {
+                menuContainer.innerHTML = "";
+
+                menuData.forEach(menuItem => {
+                    const menuItemElement = document.createElement("li");
+
+                    menuItemElement.innerHTML = `
+                        <div class="menu-title">${menuItem.title}</div>
+                        <ul class="submenu">
+                            ${menuItem.submenu.map(sub =>
+                                `<li>
+                                    <img src="${sub.image}" alt="${sub.name}" />
+                                    <span>${sub.name}</span>
+                                </li>`
+                            ).join("")}
+                        </ul>
+                    `;
+
+                    const submenu = menuItemElement.querySelector(".submenu");
+
+                    // Toggle submenu on click and close others
+                    menuItemElement.querySelector(".menu-title").addEventListener("click", function () {
+                        document.querySelectorAll(".submenu").forEach(sub => {
+                            if (sub !== submenu) {
+                                sub.classList.remove("open"); // Close other submenus smoothly
+                            }
+                        });
+
+                        submenu.classList.toggle("open"); // Toggle selected submenu
+                    });
+
+                    menuContainer.appendChild(menuItemElement);
+                });
+            }
+
+            // Render the menu with dummy data
+            renderMenu(menuData);
+        });
+    </script>
+
+</body>
+</html>
