@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Search</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .suggestions {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        .suggestions div {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .suggestions div:hover, .suggestions div.active {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body> 
+    <div class="search-container">
+        <h3>Auto Complete Suggestions</h3>
+        <input type="text" id="search" placeholder="Search...">
+        <div class="suggestions" id="suggestions"></div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById("search");
+        const suggestionsBox = document.getElementById("suggestions");
+
+        const data = [
+            "Apple", "Banana", "Cherry", "Date", "Elderberry", "Fig", "Grape", "Honeydew",
+            "Ice Apple", "Jackfruit", "Kiwi", "Lemon", "Mango", "Nectarine", "Orange", "Papaya",
+            "Quince", "Raspberry", "Strawberry", "Tomato", "Ugli Fruit", "Vanilla Bean", "Watermelon"
+        ];
+
+        let selectedIndex = -1;  
+
+        searchInput.addEventListener("input", function() {
+            const query = this.value.toLowerCase().trim();
+            selectedIndex = -1; 
+            
+            if (!query) {
+                suggestionsBox.style.display = "none";
+                return;
+            }
+
+            const filtered = data.filter(item => item.toLowerCase().includes(query));
+
+            suggestionsBox.innerHTML = "";
+            if (filtered.length === 0) {
+                suggestionsBox.style.display = "none";
+                return;
+            }
+
+            filtered.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.textContent = item;
+                div.addEventListener("click", () => {
+                    searchInput.value = item;
+                    suggestionsBox.style.display = "none";
+                });
+                suggestionsBox.appendChild(div);
+            });
+
+            suggestionsBox.style.display = "block";
+        });
+
+        searchInput.addEventListener("keydown", function(e) {
+            const items = document.querySelectorAll(".suggestions div");
+
+            if (e.key === "ArrowDown") {
+                selectedIndex = (selectedIndex + 1) % items.length;
+                highlightItem(items);
+            } else if (e.key === "ArrowUp") {
+                selectedIndex = (selectedIndex - 1 + items.length) % items.length;
+                highlightItem(items);
+            } else if (e.key === "Enter" && selectedIndex !== -1) {
+                searchInput.value = items[selectedIndex].textContent;
+                suggestionsBox.style.display = "none";
+                selectedIndex = -1;
+                e.preventDefault();  
+            }
+        });
+
+        function highlightItem(items) {
+            items.forEach(item => item.classList.remove("active"));
+            if (items[selectedIndex]) {
+                items[selectedIndex].classList.add("active");
+            }
+        }
+
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".search-container")) {
+                suggestionsBox.style.display = "none";
+            }
+        });
+
+    </script>
+
+</body>
+</html>
